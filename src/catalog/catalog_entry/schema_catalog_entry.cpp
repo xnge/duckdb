@@ -34,8 +34,28 @@
 #include "duckdb/planner/constraints/bound_foreign_key_constraint.hpp"
 #include "duckdb/parser/constraints/foreign_key_constraint.hpp"
 #include "duckdb/catalog/catalog_entry/table_macro_catalog_entry.hpp"
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+#include "duckdb/catalog/default/default_types.hpp"
+=======
+#include "duckdb/function/table/table_scan.hpp"
+#include "duckdb/planner/operator/logical_get.hpp"
+>>>>>>> c2f01fb90 (added error handling for incompatible/erroneous expressions in generated columns)
+=======
+#include "duckdb/parser/tableref/basetableref.hpp"
+#include "duckdb/planner/tableref/bound_basetableref.hpp"
+>>>>>>> 894fc64f4 (reduced code duplication by binding the table using a TableRef instead)
+=======
+#include "duckdb/function/table/table_scan.hpp"
+#include "duckdb/planner/operator/logical_get.hpp"
+>>>>>>> 4276a9c35 (fixed segfault in 'schema_catalog_entry.cpp:CreateTable)
+=======
+#include "duckdb/catalog/default/default_types.hpp"
+>>>>>>> 00faa2627 (implemented review feedback, discovered and fixed a bug related to type-resolving)
 
-#include <algorithm>
+#include "duckdb/common/algorithm.hpp"
 #include <sstream>
 
 namespace duckdb {
@@ -69,7 +89,7 @@ SchemaCatalogEntry::SchemaCatalogEntry(Catalog *catalog, string name_p, bool int
       tables(*catalog, make_unique<DefaultViewGenerator>(*catalog, this)), indexes(*catalog), table_functions(*catalog),
       copy_functions(*catalog), pragma_functions(*catalog),
       functions(*catalog, make_unique<DefaultFunctionGenerator>(*catalog, this)), sequences(*catalog),
-      collations(*catalog), types(*catalog) {
+      collations(*catalog), types(*catalog, make_unique<DefaultTypeGenerator>(*catalog, this)) {
 	this->internal = internal;
 }
 
@@ -122,17 +142,19 @@ CatalogEntry *SchemaCatalogEntry::CreateSequence(ClientContext &context, CreateS
 }
 
 CatalogEntry *SchemaCatalogEntry::CreateType(ClientContext &context, CreateTypeInfo *info) {
-	auto sequence = make_unique<TypeCatalogEntry>(catalog, this, info);
-	return AddEntry(context, move(sequence), info->on_conflict);
+	auto type_entry = make_unique<TypeCatalogEntry>(catalog, this, info);
+	return AddEntry(context, move(type_entry), info->on_conflict);
 }
 
 CatalogEntry *SchemaCatalogEntry::CreateTable(ClientContext &context, BoundCreateTableInfo *info) {
 	auto table = make_unique<TableCatalogEntry>(catalog, this, info);
 	table->storage->info->cardinality = table->storage->GetTotalRows();
+
 	CatalogEntry *entry = AddEntry(context, move(table), info->Base().on_conflict, info->dependencies);
 	if (!entry) {
 		return nullptr;
 	}
+
 	// add a foreign key constraint in main key table if there is a foreign key constraint
 	vector<unique_ptr<AlterForeignKeyInfo>> fk_arrays;
 	FindForeignKeyInformation(entry, AlterForeignKeyType::AFT_ADD, fk_arrays);

@@ -1,3 +1,8 @@
+CXX_STD = CXX11
 PKG_CPPFLAGS = -Iinclude -I../inst/include -DDUCKDB_DISABLE_PRINT {{ INCLUDES }}
+<<<<<<< HEAD
 OBJECTS=database.o connection.o statement.o register.o scan.o utils.o altrep.o types.o cpp11.o {{ SOURCES }}
+=======
+OBJECTS=rapi.o database.o connection.o statement.o register.o scan.o utils.o altrep.o types.o relational.o cpp11.o {{ SOURCES }}
+>>>>>>> 675e7aaef (first baby steps towards r relational and expression api)
 PKG_LIBS={{ LINK_FLAGS }}

@@ -3,13 +3,19 @@
 
 namespace duckdb {
 
+<<<<<<< HEAD
+MaterializedQueryResult::MaterializedQueryResult(StatementType statement_type, StatementProperties properties,
+                                                 vector<LogicalType> types, vector<string> names)
+    : QueryResult(QueryResultType::MATERIALIZED_RESULT, statement_type, properties, move(types), move(names)) {
+=======
 MaterializedQueryResult::MaterializedQueryResult(StatementType statement_type)
     : QueryResult(QueryResultType::MATERIALIZED_RESULT, statement_type) {
 }
 
 MaterializedQueryResult::MaterializedQueryResult(StatementType statement_type, vector<LogicalType> types,
-                                                 vector<string> names)
-    : QueryResult(QueryResultType::MATERIALIZED_RESULT, statement_type, move(types), move(names)) {
+                                                 vector<string> names, const shared_ptr<ClientContext> &context)
+    : QueryResult(QueryResultType::MATERIALIZED_RESULT, statement_type, move(types), move(names)), context(context) {
+>>>>>>> 5d6ba48e9 (Making Arrow R with timestampstz as well)
 }
 
 MaterializedQueryResult::MaterializedQueryResult(string error)

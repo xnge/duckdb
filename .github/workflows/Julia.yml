@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8a9acca6f (Revert all Github actions)
 name: Julia
 on:
    push:
@@ -17,10 +21,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || '' }}-${{ github.base_ref || '' }}-${{ github.ref != 'refs/heads/master' || github.sha }}
   cancel-in-progress: true
 
+<<<<<<< HEAD
+=======
 defaults:
   run:
     shell: bash
 
+>>>>>>> 8a9acca6f (Revert all Github actions)
 jobs:
   format_check:
     name: Julia Format Check
@@ -36,10 +43,18 @@ jobs:
           arch: x64
 
       - name: Format Check
+<<<<<<< HEAD
+        shell: bash
         run: |
             cd tools/juliapkg
             julia -e "import Pkg; Pkg.add(\"JuliaFormatter\")"
             ./format_check.sh 
+=======
+        run: |
+            cd tools/juliapkg
+            julia -e "import Pkg; Pkg.add(\"JuliaFormatter\")"
+            ./format_check.sh
+>>>>>>> 8a9acca6f (Revert all Github actions)
 
   main_julia:
     name: Julia ${{ matrix.version }}
@@ -65,13 +80,116 @@ jobs:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
 
+      - name: Setup Ccache
+        uses: hendrikmuhs/ccache-action@main
+        with:
+          key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.version }}
+
       - name: Build DuckDB
+<<<<<<< HEAD
+        shell: bash
+=======
+>>>>>>> 8a9acca6f (Revert all Github actions)
         run: |
-            make
+            BUILD_TPCH=1 make
 
       - name: Run Tests
+<<<<<<< HEAD
+        shell: bash
+=======
+>>>>>>> 8a9acca6f (Revert all Github actions)
         run: |
           export JULIA_DUCKDB_LIBRARY="`pwd`/build/release/src/libduckdb.so"
+          export JULIA_NUM_THREADS=2
           ls $JULIA_DUCKDB_LIBRARY
           cd tools/juliapkg
+<<<<<<< HEAD
           julia -e "import Pkg; Pkg.activate(\".\"); Pkg.instantiate(); include(\"test/runtests.jl\")"
+=======
+#name: Julia
+#on:
+#   push:
+#     paths-ignore:
+#       - '**.md'
+#   pull_request:
+#     paths-ignore:
+#       - '**.md'
+#       - 'examples/**'
+#       - 'test/**'
+#       - 'tools/nodejs/**'
+#       - 'tools/pythonpkg/**'
+#       - 'tools/rpkg/**'
+#       - '.github/workflows/**'
+#       - '!.github/workflows/Julia.yml'
+#concurrency:
+#  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || '' }}-${{ github.base_ref || '' }}-${{ github.ref != 'refs/heads/master' || github.sha }}
+#  cancel-in-progress: true
+#
+#defaults:
+#  run:
+#    shell: bash
+#
+#jobs:
+#  format_check:
+#    name: Julia Format Check
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - uses: julia-actions/setup-julia@v1
+#        with:
+#          version: 1.7
+#          arch: x64
+#
+#      - name: Format Check
+#        run: |
+#            cd tools/juliapkg
+#            julia -e "import Pkg; Pkg.add(\"JuliaFormatter\")"
+#            ./format_check.sh
+#
+#  main_julia:
+#    name: Julia ${{ matrix.version }}
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        version:
+#          - '1.6'
+#          - '1.7'
+#          - 'nightly'
+#        os:
+#          - ubuntu-latest
+#        arch:
+#          - x64
+#    steps:
+#      - uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - uses: julia-actions/setup-julia@v1
+#        with:
+#          version: ${{ matrix.version }}
+#          arch: ${{ matrix.arch }}
+#
+#      - name: Setup Ccache
+#        uses: hendrikmuhs/ccache-action@main
+#        with:
+#          key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.version }}
+#
+#      - name: Build DuckDB
+#        run: |
+#            BUILD_TPCH=1 make
+#
+#      - name: Run Tests
+#        run: |
+#          export JULIA_DUCKDB_LIBRARY="`pwd`/build/release/src/libduckdb.so"
+#          export JULIA_NUM_THREADS=2
+#          ls $JULIA_DUCKDB_LIBRARY
+#          cd tools/juliapkg
+#          julia -e "import Pkg; Pkg.activate(\".\"); Pkg.instantiate(); include(\"test/runtests.jl\")"
+>>>>>>> 7b454bc83 (SQLancer CI)
+=======
+          julia -e "import Pkg; Pkg.activate(\".\"); Pkg.instantiate(); include(\"test/runtests.jl\")"
+>>>>>>> 8a9acca6f (Revert all Github actions)

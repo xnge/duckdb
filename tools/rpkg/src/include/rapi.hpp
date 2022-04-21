@@ -29,15 +29,35 @@ struct ConnWrapper {
 	db_eptr_t db_eptr;
 };
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 148f92c4d (format)
 void ConnDeleter(ConnWrapper *);
 typedef cpp11::external_pointer<ConnWrapper, ConnDeleter> conn_eptr_t;
+=======
+typedef cpp11::external_pointer<ConnWrapper> con_extptr;
+>>>>>>> 3cc160963 (big cleanup, less wrappers)
 
 struct RStatement {
 	unique_ptr<PreparedStatement> stmt;
 	vector<Value> parameters;
 };
 
+<<<<<<< HEAD
 typedef cpp11::external_pointer<RStatement> stmt_eptr_t;
+=======
+struct RelationWrapper {
+	RelationWrapper(std::shared_ptr<Relation> rel_p) : rel(move(rel_p)) {
+	}
+	shared_ptr<Relation> rel;
+};
+
+typedef cpp11::external_pointer<ParsedExpression> expr_extptr;
+typedef cpp11::external_pointer<RelationWrapper> rel_extptr;
+
+struct RApi {
+>>>>>>> 3cc160963 (big cleanup, less wrappers)
 
 struct RQueryResult {
 	unique_ptr<QueryResult> result;
@@ -90,6 +110,7 @@ struct RStrings {
 	SEXP UTC_str; // Rf_mkString
 	SEXP Date_str;
 	SEXP factor_str;
+	SEXP dataframe_str;
 	SEXP difftime_str;
 	SEXP secs_str;
 	SEXP arrow_str; // StringsToSexp
@@ -112,6 +133,8 @@ struct RStrings {
 private:
 	RStrings();
 };
+
+SEXP duckdb_execute_R_impl(MaterializedQueryResult *result);
 
 } // namespace duckdb
 
