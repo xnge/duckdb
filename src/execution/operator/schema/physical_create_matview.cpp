@@ -11,7 +11,7 @@ PhysicalCreateMatView::PhysicalCreateMatView(LogicalOperator &op, SchemaCatalogE
                                              unique_ptr<BoundCreateTableInfo> info, idx_t estimated_cardinality)
     : PhysicalCreateTableAs(op, schema, move(info), estimated_cardinality) {
 	this->type = PhysicalOperatorType::CREATE_MATVIEW;
-};
+}
 
 //===--------------------------------------------------------------------===//
 // Sink
