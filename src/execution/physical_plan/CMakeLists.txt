@@ -42,7 +42,7 @@ add_library_unity(
   plan_recursive_cte.cpp)
 
 target_include_directories(
-        duckdb_physical_plan PUBLIC ${CMAKE_SOURCE_DIR}/third_party/fmt)
+  duckdb_physical_plan PUBLIC ${CMAKE_SOURCE_DIR}/third_party/fmt)
 
 set(ALL_OBJECT_FILES
     ${ALL_OBJECT_FILES} $<TARGET_OBJECTS:duckdb_physical_plan>
