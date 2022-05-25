@@ -1,5 +1,6 @@
 #include "duckdb/common/exception.hpp"
 #include "duckdb/execution/operator/schema/physical_create_matview.hpp"
+#include "duckdb/execution/physical_plan_generator.hpp"
 #include "duckdb/parser/parsed_data/create_matview_info.hpp"
 #include "duckdb/planner/operator/logical_create_matview.hpp"
 
